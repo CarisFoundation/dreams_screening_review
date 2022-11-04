@@ -1,5 +1,5 @@
 ---
-title: "dreams_screening_review"
+title: "Dreams_Screening_Review"
 subtitle: "| Caris Foundation International | Impact Youth Project"
 author: "Alexandro Disla | M&E Officer"
 ---
@@ -54,7 +54,13 @@ use_python('/usr/local/opt/python@3.10/bin/python3')
 Notre objectif, ici, est d'avoir une idée globale pour le processus d'enrolements et l'eligibilite des AGYW.
 
 Dans cette optique, on va etablir les elements suivants:
+
 - **screened**: Nombre de beneficaires qui ont repondu les questionnaires.
+
 - **eligible**: Nombre de beneficiares qui ont repondu aux questionnaires et ont un score superieur a 14.
+
 - **served**: Nombre de beneficiaires qui ont un code dreams indiquant que les data clercs ont au moins effectues une saisie sur HIVHAITI.
-- **to_be_served**: Nombre de beneficiaires qui n'ont pas de code dreams indiquant qu'ils n'ont pas ete saisies.
+
+- **to_be_served**: Nombre de beneficiaires qui n'ont pas de code dreams indiquant qu'ils n'ont pas ete saisies.^[
+  Deux possibilites, Elles n'ont pas encore ete appelees dans les hubs ou bien les fiches de terrain contenant leur informations n'ont pas encore saisies sur HIVHAITI.
+]
