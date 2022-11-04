@@ -1,7 +1,60 @@
 ---
 title: "dreams_screening_review"
+subtitle: "| Caris Foundation International | Impact Youth Project"
+author: "Alexandro Disla | M&E Officer"
 ---
 
-## Quarto
+<style>
+body{
+  text-align: justify
+}
+</style>
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+```{r}
+#| label: setup
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(RMySQL))
+suppressPackageStartupMessages(library(odbc))
+suppressPackageStartupMessages(library(DBI))
+suppressPackageStartupMessages(library(viridis))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(ggrepel))
+suppressPackageStartupMessages(library(ggiraphExtra))
+suppressPackageStartupMessages(library(hrbrthemes))
+suppressPackageStartupMessages(library(plotly))
+suppressPackageStartupMessages(library(stringr))
+suppressPackageStartupMessages(library(RColorBrewer))
+suppressPackageStartupMessages(library(tidytext))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(purrr))
+suppressPackageStartupMessages(library(lubridate))
+suppressPackageStartupMessages(library(scales))
+suppressPackageStartupMessages(library(extrafont))
+suppressPackageStartupMessages(library(forcats))
+suppressPackageStartupMessages(library(DT))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(readxl))
+suppressPackageStartupMessages(library(reticulate))
+suppressPackageStartupMessages(library(kableExtra))
+
+
+#use_virtualenv('r-reticulate')
+use_python('/usr/local/opt/python@3.10/bin/python3')
+
+```
+
+
+
+
+
+
+
+## Overview
+
+Notre objectif, ici, est d'avoir une idée globale pour le processus d'enrolements et l'eligibilite des AGYW.
+
+Dans cette optique, on va etablir les elements suivants:
+- **screened**: Nombre de beneficaires qui ont repondu les questionnaires.
+- **eligible**: Nombre de beneficiares qui ont repondu aux questionnaires et ont un score superieur a 14.
+- **served**: Nombre de beneficiaires qui ont un code dreams indiquant que les data clercs ont au moins effectues une saisie sur HIVHAITI.
+- **to_be_served**: Nombre de beneficiaires qui n'ont pas de code dreams indiquant qu'ils n'ont pas ete saisies.
