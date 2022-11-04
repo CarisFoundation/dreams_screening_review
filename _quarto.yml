@@ -1,0 +1,20 @@
+project:
+  output-dir: _output
+toc: true
+toc-depth: 4
+toc-location: right
+number-sections: true
+title-block-banner: true
+title-block-banner-color: "dodgerBlue"
+title-block-categories: true
+execute:
+  cache: false
+  echo: false
+linestretch: 1
+theme:
+  light: flatly
+  dark: darkly
+format:
+  html:
+    self-contained: true
+date: today
