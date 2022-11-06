@@ -12,6 +12,7 @@ body{
 
 ```{r}
 #| label: setup
+rm(list=ls())
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(RMySQL))
 suppressPackageStartupMessages(library(odbc))
@@ -36,6 +37,7 @@ suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(readxl))
 suppressPackageStartupMessages(library(reticulate))
 suppressPackageStartupMessages(library(kableExtra))
+suppressPackageStartupMessages(library(gt))
 
 
 #use_virtualenv('r-reticulate')
@@ -43,10 +45,17 @@ use_python('/usr/local/opt/python@3.10/bin/python3')
 
 ```
 
+```{python}
+#| label: Data
+#| output: false
 
-
-
-
+from screening import (
+    SCREENED,
+    ELIGIBLE,
+    TOBESERVED,
+    SERVED
+)
+```
 
 
 ## Overview
@@ -64,3 +73,79 @@ Dans cette optique, on va etablir les elements suivants:
 - **to_be_served**: Nombre de beneficiaires qui n'ont pas de code dreams indiquant qu'ils n'ont pas ete saisies.^[
   Deux possibilites, Elles n'ont pas encore ete appelees dans les hubs ou bien les fiches de terrain contenant leur informations n'ont pas encore saisies sur HIVHAITI.
 ]
+
+## Screened VS Eligible in DREAMS
+
+```{r}
+#| label: screened vs eligible
+screened_eligible<-data.frame(
+  FY18 =c(
+    py$SCREENED$FY18,
+    py$ELIGIBLE$FY18,
+    (py$ELIGIBLE$FY18/py$SCREENED$FY18)*100
+  ),
+  FY19 =c(
+    py$SCREENED$FY19,
+    py$ELIGIBLE$FY19,
+    (py$ELIGIBLE$FY19/py$SCREENED$FY19)*100
+  ),
+  FY20 =c(
+    py$SCREENED$FY20,
+    py$ELIGIBLE$FY20,
+    (py$ELIGIBLE$FY20/py$SCREENED$FY20)*100
+  ),
+  FY21 =c(
+    py$SCREENED$FY21,
+    py$ELIGIBLE$FY21,
+    (py$ELIGIBLE$FY21/py$SCREENED$FY21)*100
+  ),
+  FY22 =c(
+    py$SCREENED$FY22,
+    py$ELIGIBLE$FY22,
+    (py$ELIGIBLE$FY22/py$SCREENED$FY22)*100
+  ),
+  FY23 =c(
+    py$SCREENED$FY23,
+    py$ELIGIBLE$FY23,
+    (py$ELIGIBLE$FY23/py$SCREENED$FY23)*100
+  )
+)
+row.names(screened_eligible) <- c("screened", "eligible","% of Agyw enrolled")
+
+screened_eligible%>%
+  gt(
+    rowname_col = c("screened", "eligible","% of Agyw enrolled"),
+    rownames_to_stub=TRUE
+  )%>%
+  tab_header(
+    title = md("**Table 1: Presentation du nombre de beneficiares screenees et enrolees**")
+  )%>%tab_stubhead(
+    label = md("**mod/year**")
+  ) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "lightgreen"),
+      cell_text(color = "white")
+      ),
+    locations = cells_body(rows = 3)
+  ) %>%
+  fmt_number(
+    columns=1:7,
+    decimals = 0
+  ) %>%
+  tab_source_note(
+    source_note = md("**Source: HIVHAITI**")
+  )
+#TODO: try to add fmt_percentage to row 3
+```
+
+
+
+## Eligible VS Served
+
+
+#TODO: do it immediately
+
+## Eligible VS ToBEServed
+
+#TODO: do it immediately
