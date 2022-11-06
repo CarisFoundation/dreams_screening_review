@@ -136,16 +136,136 @@ screened_eligible%>%
   tab_source_note(
     source_note = md("**Source: HIVHAITI**")
   )
-#TODO: try to add fmt_percentage to row 3
+
 ```
-
-
 
 ## Eligible VS Served
 
+```{r}
+#| label: served vs eligible
+eligible_served<-data.frame(
+  FY18 =c(
+    py$SERVED$FY18,
+    py$ELIGIBLE$FY18,
+    (py$SERVED$FY18/py$ELIGIBLE$FY18)*100
+  ),
+  FY19 =c(
+    py$SERVED$FY19,
+    py$ELIGIBLE$FY19,
+    (py$SERVED$FY19/py$ELIGIBLE$FY19)*100
+  ),
+  FY20 =c(
+    py$SERVED$FY20,
+    py$ELIGIBLE$FY20,
+    (py$SERVED$FY20/py$ELIGIBLE$FY20)*100
+  ),
+  FY21 =c(
+    py$SERVED$FY21,
+    py$ELIGIBLE$FY21,
+    (py$SERVED$FY21/py$ELIGIBLE$FY21)*100
+  ),
+  FY22 =c(
+    py$SERVED$FY22,
+    py$ELIGIBLE$FY22,
+    (py$SERVED$FY22/py$ELIGIBLE$FY22)*100
+  ),
+  FY23 =c(
+    py$SERVED$FY23,
+    py$ELIGIBLE$FY23,
+    (py$SERVED$FY23/py$ELIGIBLE$FY23)*100
+  )
+)
+row.names(eligible_served) <- c("served", "eligible","% of Agyw served")
 
-#TODO: do it immediately
+eligible_served%>%
+  gt(
+    rowname_col = c("served", "eligible","% of Agyw served"),
+    rownames_to_stub=TRUE
+  )%>%
+  tab_header(
+    title = md("**Table 2: Presentation du nombre de beneficiares eligibles et servies**")
+  )%>%tab_stubhead(
+    label = md("**mod/year**")
+  ) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "lightgreen"),
+      cell_text(color = "white")
+      ),
+    locations = cells_body(rows = 3)
+  ) %>%
+  fmt_number(
+    columns=1:7,
+    decimals = 0
+  ) %>%
+  tab_source_note(
+    source_note = md("**Source: HIVHAITI**")
+  )
+
+```
 
 ## Eligible VS ToBEServed
 
-#TODO: do it immediately
+```{r}
+#| label: tobeserved vs eligible
+eligible_tobeserved<-data.frame(
+  FY18 =c(
+    py$TOBESERVED$FY18,
+    py$ELIGIBLE$FY18,
+    (py$TOBESERVED$FY18/py$ELIGIBLE$FY18)*100
+  ),
+  FY19 =c(
+    py$TOBESERVED$FY19,
+    py$ELIGIBLE$FY19,
+    (py$TOBESERVED$FY19/py$ELIGIBLE$FY19)*100
+  ),
+  FY20 =c(
+    py$TOBESERVED$FY20,
+    py$ELIGIBLE$FY20,
+    (py$TOBESERVED$FY20/py$ELIGIBLE$FY20)*100
+  ),
+  FY21 =c(
+    py$TOBESERVED$FY21,
+    py$ELIGIBLE$FY21,
+    (py$TOBESERVED$FY21/py$ELIGIBLE$FY21)*100
+  ),
+  FY22 =c(
+    py$TOBESERVED$FY22,
+    py$ELIGIBLE$FY22,
+    (py$TOBESERVED$FY22/py$ELIGIBLE$FY22)*100
+  ),
+  FY23 =c(
+    py$TOBESERVED$FY23,
+    py$ELIGIBLE$FY23,
+    (py$TOBESERVED$FY23/py$ELIGIBLE$FY23)*100
+  )
+)
+row.names(eligible_tobeserved) <- c("to be served", "eligible","% of Agyw to be served")
+
+eligible_tobeserved%>%
+  gt(
+    rowname_col = c("to be served", "eligible","% of Agyw to be served"),
+    rownames_to_stub=TRUE
+  )%>%
+  tab_header(
+    title = md("**Table 2: Presentation du nombre de beneficiares eligibles et a servir**")
+  )%>%tab_stubhead(
+    label = md("**mod/year**")
+  ) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "lightgreen"),
+      cell_text(color = "white")
+      ),
+    locations = cells_body(rows = 3)
+  ) %>%
+  fmt_number(
+    columns=1:7,
+    decimals = 0
+  ) %>%
+  tab_source_note(
+    source_note = md("**Source: HIVHAITI**")
+  )
+
+```
+
