@@ -1,4 +1,4 @@
-from pandas import DataFrame
+from pandas import (DataFrame, to_datetime)
 
 from .data import (
     eligible_or_not,
@@ -60,6 +60,9 @@ TOBESERVED = DataFrame(
     "FY23":[to_be_served_FY23.shape[0]]
   }
 )
+
+TOBESERVEDFY23 = to_be_served_FY23.fillna(-1)
+TOBESERVEDFY23.dob = to_datetime(TOBESERVEDFY23.dob, utc=True)
 
 # served
 served_FY18 = served[(served.interview_date >="2017-10-01") & (served.interview_date <="2018-09-30")]

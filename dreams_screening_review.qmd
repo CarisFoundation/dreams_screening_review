@@ -53,7 +53,8 @@ from screening import (
     SCREENED,
     ELIGIBLE,
     TOBESERVED,
-    SERVED
+    SERVED,
+    TOBESERVEDFY23
 )
 ```
 
@@ -74,7 +75,7 @@ Dans cette optique, on va etablir les elements suivants:
   Deux possibilites, Elles n'ont pas encore ete appelees dans les hubs ou bien les fiches de terrain contenant leur informations n'ont pas encore saisies sur HIVHAITI.
 ]
 
-## Screened VS Eligible in DREAMS
+## Screened VS Eligible
 
 ```{r}
 #| label: screened vs eligible
@@ -204,7 +205,7 @@ eligible_served%>%
 
 ```
 
-## Eligible VS ToBEServed
+## Eligible VS To Be Served
 
 ```{r}
 #| label: tobeserved vs eligible
@@ -266,6 +267,27 @@ eligible_tobeserved%>%
   tab_source_note(
     source_note = md("**Source: HIVHAITI**")
   )
+```
 
+## Liste des agyw a servir FY23
+
+```{r}
+#| label: FY23 table
+datatable(py$TOBESERVEDFY23, extensions = 'Buttons',
+  options = list(dom = 'Bfrtip',
+  columnDefs = list(list(className = 'dt-center', targets = "_all")),
+  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#800000', 'color': '#fff'});",
+    "}"),
+  buttons = list(
+    list(extend='copy',title="TO_BE_SERVED_FY23"), 
+    list(extend='csv',title="TO_BE_SERVED_FY23"), 
+    list(extend='excel',title="TO_BE_SERVED_FY23"), 
+    list(extend='pdf',title="TO_BE_SERVED_FY23"), 
+    list(extend='print',title="TO_BE_SERVED_FY23")
+  ),
+  pageLength = 10))                         
+```   
 ```
 
