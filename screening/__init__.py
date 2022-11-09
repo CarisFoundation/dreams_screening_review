@@ -82,4 +82,31 @@ SERVED = DataFrame(
   }
 )
 
+# to be served per Quater
+unserved_Q1FY23 = to_be_served[(to_be_served.interview_date >="2022-10-01") & (to_be_served.interview_date <="2022-12-31")]
 
+unserved_Q1FY22 = to_be_served[(to_be_served.interview_date >="2021-10-01") & (to_be_served.interview_date <="2021-12-31")]
+unserved_Q2FY22 = to_be_served[(to_be_served.interview_date >="2022-01-01") & (to_be_served.interview_date <="2022-03-31")]
+unserved_Q3FY22 = to_be_served[(to_be_served.interview_date >="2022-04-01") & (to_be_served.interview_date <="2022-06-30")]
+unserved_Q4FY22 = to_be_served[(to_be_served.interview_date >="2022-07-01") & (to_be_served.interview_date <="2022-09-30")]
+
+unserved_FY21 = to_be_served[(to_be_served.interview_date >="2020-10-01") & (to_be_served.interview_date <="2021-09-30")]
+
+unserved_FY20 = to_be_served[(to_be_served.interview_date >="2019-10-01") & (to_be_served.interview_date <="2020-09-30")]
+
+unserved_Before_FY20 = to_be_served[to_be_served.interview_date <= "2019-10-01"]
+
+TOBESERVEDPERQUARTER = DataFrame.from_dict(
+  {
+    "unserved_Q1FY23":[unserved_Q1FY23.shape[0]],
+    "unserved_Q1FY22":[unserved_Q1FY22.shape[0]],
+    "unserved_Q2FY22":[unserved_Q2FY22.shape[0]],
+    "unserved_Q3FY22":[unserved_Q3FY22.shape[0]],
+    "unserved_Q4FY22":[unserved_Q4FY22.shape[0]],
+    "unserved_FY21":[unserved_FY21.shape[0]],
+    "unserved_FY20":[unserved_FY20.shape[0]],
+    "unserved_Before_FY20":[unserved_Before_FY20.shape[0]]
+  },
+  orient='index',
+  columns=["donnee"]
+)

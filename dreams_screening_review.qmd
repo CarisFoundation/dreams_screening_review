@@ -54,7 +54,8 @@ from screening import (
     ELIGIBLE,
     TOBESERVED,
     SERVED,
-    TOBESERVEDFY23
+    TOBESERVEDFY23,
+    TOBESERVEDPERQUARTER
 )
 ```
 
@@ -249,7 +250,7 @@ eligible_tobeserved%>%
     rownames_to_stub=TRUE
   )%>%
   tab_header(
-    title = md("**Table 2: Presentation du nombre de beneficiares eligibles et a servir**")
+    title = md("**Table 3: Presentation du nombre de beneficiares eligibles et a servir**")
   )%>%tab_stubhead(
     label = md("**mod/year**")
   ) %>%
@@ -268,6 +269,47 @@ eligible_tobeserved%>%
     source_note = md("**Source: HIVHAITI**")
   )
 ```
+
+## TO Be Served Per Quarter
+
+```{r}
+#| label: served per quarter
+py$TOBESERVEDPERQUARTER%>%
+  gt(
+    rowname_col = c(
+      "unserved_Q1FY23",
+      "unserved_Q1FY22",
+      "unserved_Q2FY22",
+      "unserved_Q3FY22",
+      "unserved_Q4FY22",
+      "unserved_FY21",
+      "unserved_FY20",
+      "unserved_Before_FY20",
+    ),
+    rownames_to_stub=TRUE
+  )%>%
+  tab_header(
+    title = md("**Table 4: Presentation du nombre de beneficiares a servir par trimestre**")
+  )%>%tab_stubhead(
+    label = md("**trim/donnee**")
+  ) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "lightgreen"),
+      cell_text(color = "white")
+      ),
+    locations = cells_body(rows = 1)
+  ) %>%
+  fmt_number(
+    columns=1,
+    decimals = 0
+  ) %>%
+  tab_source_note(
+    source_note = md("**Source: HIVHAITI**")
+  )
+```
+
+
 
 ## Liste des agyw a servir FY23
 

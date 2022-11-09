@@ -1,5 +1,8 @@
 project:
   output-dir: _output
+  render:
+    - "dreams_*.qmd"
+    - "!Readme.md"
 toc: true
 toc-depth: 4
 toc-location: right

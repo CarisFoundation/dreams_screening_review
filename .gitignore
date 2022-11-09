@@ -195,3 +195,5 @@ rsconnect/
 *.Rmd 
 
 *.zip
+
+.vscode
