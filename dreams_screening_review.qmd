@@ -1,5 +1,5 @@
 ---
-title: "Dreams_Screening_Review"
+title: "Dreams Screening Review"
 subtitle: "| Caris Foundation International | Impact Youth Project"
 author: "Alexandro Disla | M&E Officer"
 ---
@@ -62,18 +62,18 @@ from screening import (
 
 ## Overview
 
-Notre objectif, ici, est d'avoir une idée globale pour le processus d'enrolements et l'eligibilite des AGYW.
+Notre objectif, ici, est d'avoir une idée globale pour le processus d'enrôlement et l'éligibilité des AGYW.
 
-Dans cette optique, on va etablir les elements suivants:
+Dans cette optique, on va établir les éléments suivants:
 
-- **screened**: Nombre de beneficaires qui ont repondu les questionnaires.
+- **screened**: Nombre de bénéficaires qui ont répondu les questionnaires.
 
-- **eligible**: Nombre de beneficiares qui ont repondu aux questionnaires et ont un score superieur a 14.
+- **eligible**: Nombre de béneficiares qui ont répondu aux questionnaires et ont un score supérieur à 14.
 
-- **served**: Nombre de beneficiaires qui ont un code dreams indiquant que les data clercs ont au moins effectues une saisie sur HIVHAITI.
+- **served**: Nombre de bénéficiaires qui ont un code dreams indiquant que les data clercs ont au moins effectués une saisie sur HIVHAITI.
 
-- **to_be_served**: Nombre de beneficiaires qui n'ont pas de code dreams indiquant qu'ils n'ont pas ete saisies.^[
-  Deux possibilites, Elles n'ont pas encore ete appelees dans les hubs ou bien les fiches de terrain contenant leur informations n'ont pas encore saisies sur HIVHAITI.
+- **to_be_served**: Nombre de bénéficiaires qui n'ont pas de code dreams indiquant qu'ils n'ont pas été saisies.^[
+  Deux possibilités, Elles n'ont pas encore été appelées dans les hubs ou bien les fiches de terrain contenant leur informations n'ont pas encore saisies sur HIVHAITI.
 ]
 
 ## Screened VS Eligible
@@ -120,7 +120,7 @@ screened_eligible%>%
     rownames_to_stub=TRUE
   )%>%
   tab_header(
-    title = md("**Table 1: Presentation du nombre de beneficiares screenees et enrolees**")
+    title = md("**Table 1: Présentation du nombre de bénéficiares screenées et enrôlées**")
   )%>%tab_stubhead(
     label = md("**mod/year**")
   ) %>%
@@ -185,7 +185,7 @@ eligible_served%>%
     rownames_to_stub=TRUE
   )%>%
   tab_header(
-    title = md("**Table 2: Presentation du nombre de beneficiares eligibles et servies**")
+    title = md("**Table 2: Présentation du nombre de bénéficiares éligibles et servies**")
   )%>%tab_stubhead(
     label = md("**mod/year**")
   ) %>%
@@ -250,7 +250,7 @@ eligible_tobeserved%>%
     rownames_to_stub=TRUE
   )%>%
   tab_header(
-    title = md("**Table 3: Presentation du nombre de beneficiares eligibles et a servir**")
+    title = md("**Table 3: Présentation du nombre de bénéficiares éligibles et à servir**")
   )%>%tab_stubhead(
     label = md("**mod/year**")
   ) %>%
@@ -289,7 +289,7 @@ py$TOBESERVEDPERQUARTER%>%
     rownames_to_stub=TRUE
   )%>%
   tab_header(
-    title = md("**Table 4: Presentation du nombre de beneficiares a servir par trimestre**")
+    title = md("**Table 4: Présentation du nombre de bénéficiares à servir par trimestre**")
   )%>%tab_stubhead(
     label = md("**trim/donnee**")
   ) %>%
@@ -311,7 +311,7 @@ py$TOBESERVEDPERQUARTER%>%
 
 
 
-## Liste des agyw a servir FY23
+## Liste des agyw à servir FY23
 
 ```{r}
 #| label: FY23 table
@@ -331,5 +331,5 @@ datatable(py$TOBESERVEDFY23, extensions = 'Buttons',
   ),
   pageLength = 10))                         
 ```   
-```
+
 

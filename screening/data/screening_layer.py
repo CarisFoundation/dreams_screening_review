@@ -13,17 +13,25 @@ sdata.interview_date = sdata.loc[:, 'interview_date'].apply(to_datetime)
 eligible_or_not =  sdata
 
 # eligible
-eligible = sdata[_.total >= 14]
+eligible = sdata[
+    (_.total >= 14)&
+    (_.age_range!="not_valid_age")&
+    (_.age_range!="25_29")
+]
 
 
 # to be served
 to_be_served = sdata[
     (_.code =="---")&
-    (_.total>=14)    
+    (_.total>=14)&
+    (_.age_range!="not_valid_age")&
+    (_.age_range!="25_29")
 ]
 
 # already served
 served = sdata[
     (_.code!="---")&
-    (_.total>=14)
+    (_.total>=14)&
+    (_.age_range!="not_valid_age")&
+    (_.age_range!="25_29")
 ]
