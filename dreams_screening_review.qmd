@@ -278,13 +278,14 @@ py$TOBESERVEDPERQUARTER%>%
   gt(
     rowname_col = c(
       "unserved_Q1FY23",
+      #"unserved_FY22",
+      #"unserved_FY21",
       "unserved_Q1FY22",
       "unserved_Q2FY22",
       "unserved_Q3FY22",
       "unserved_Q4FY22",
-      "unserved_FY21",
-      "unserved_FY20",
-      "unserved_Before_FY20",
+      #"unserved_FY20",
+      #"unserved_Before_FY20",
     ),
     rownames_to_stub=TRUE
   )%>%
@@ -311,7 +312,7 @@ py$TOBESERVEDPERQUARTER%>%
 
 
 
-## Liste des agyw à servir FY23
+## Liste des agyw à servir pour FY23
 
 ```{r}
 #| label: FY23 table
