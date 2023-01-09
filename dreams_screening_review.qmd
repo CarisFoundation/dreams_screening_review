@@ -326,6 +326,7 @@ py$TOBESERVEDPERQUARTER%>%
 
 ```{r}
 #| label: FY23 table
+#| warning: false
 datatable(py$TOBESERVEDFY23, extensions = 'Buttons',
   options = list(dom = 'Bfrtip',
   columnDefs = list(list(className = 'dt-center', targets = "_all")),
