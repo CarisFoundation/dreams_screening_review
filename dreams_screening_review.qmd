@@ -17,7 +17,7 @@ suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(RMySQL))
 suppressPackageStartupMessages(library(odbc))
 suppressPackageStartupMessages(library(DBI))
-suppressPackageStartupMessages(library(viridis))
+suppressPackageStartupMessages(library(viridis)) 
 suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(ggrepel))
 suppressPackageStartupMessages(library(ggiraphExtra))
@@ -62,11 +62,11 @@ from screening import (
    unserved_Q3FY22,
    unserved_Q4FY22
 )
-served_FY23.to_excel("./served_fy23.xlsx",index=False)
-unserved_Q1FY22.to_excel("./unserved_Q1FY22.xlsx",index=False)
-unserved_Q2FY22.to_excel("./unserved_Q2FY22.xlsx",index=False)
-unserved_Q3FY22.to_excel("./unserved_Q3FY22.xlsx",index=False)
-unserved_Q4FY22.to_excel("./unserved_Q4FY22.xlsx",index=False)
+#served_FY23.to_excel("./served_fy23.xlsx",index=False)
+#unserved_Q1FY22.to_excel("./unserved_Q1FY22.xlsx",index=False)
+#unserved_Q2FY22.to_excel("./unserved_Q2FY22.xlsx",index=False)
+#unserved_Q3FY22.to_excel("./unserved_Q3FY22.xlsx",index=False)
+#unserved_Q4FY22.to_excel("./unserved_Q4FY22.xlsx",index=False)
 ```
 
 
@@ -142,8 +142,9 @@ screened_eligible%>%
     locations = cells_body(rows = 3)
   ) %>%
   fmt_number(
-    columns=1:7,
-    decimals = 0
+   columns=2:7,
+   rows=1:3,
+   decimals = 0
   ) %>%
   tab_source_note(
     source_note = md("**Source: HIVHAITI**")
@@ -207,8 +208,9 @@ eligible_served%>%
     locations = cells_body(rows = 3)
   ) %>%
   fmt_number(
-    columns=1:7,
-    decimals = 0
+   columns=2:7,
+   rows=1:3,
+   decimals = 0
   ) %>%
   tab_source_note(
     source_note = md("**Source: HIVHAITI**")
@@ -272,8 +274,9 @@ eligible_tobeserved%>%
     locations = cells_body(rows = 3)
   ) %>%
   fmt_number(
-    columns=1:7,
-    decimals = 0
+   columns=2:7,
+   rows=1:3,
+   decimals = 0
   ) %>%
   tab_source_note(
     source_note = md("**Source: HIVHAITI**")
@@ -287,7 +290,7 @@ eligible_tobeserved%>%
 py$TOBESERVEDPERQUARTER%>%
   gt(
     rowname_col = c(
-      "unserved_Q1FY23",
+      "unserved_FY23",
       #"unserved_FY22",
       #"unserved_FY21",
       "unserved_Q1FY22",
@@ -312,8 +315,8 @@ py$TOBESERVEDPERQUARTER%>%
     locations = cells_body(rows = 1)
   ) %>%
   fmt_number(
-    columns=1,
-    decimals = 0
+   columns=2,
+   decimals = 0
   ) %>%
   tab_source_note(
     source_note = md("**Source: HIVHAITI**")
