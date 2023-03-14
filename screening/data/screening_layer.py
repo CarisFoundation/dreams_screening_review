@@ -3,8 +3,10 @@ from numpy import nan
 from siuba import _
 from ..db import SDATA, engine
 
+from sqlalchemy import text
+
 # all recorded beneficiaires screened
-sdata = read_sql_query(SDATA, engine, parse_dates=True)
+sdata = read_sql_query(text(SDATA), engine.connect(), parse_dates=True)
 engine.dispose()
 sdata.replace(r'^\s*$', nan, regex=True, inplace=True)
 sdata.code = sdata.code.fillna('---')

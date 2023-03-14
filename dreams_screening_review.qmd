@@ -41,7 +41,8 @@ suppressPackageStartupMessages(library(gt))
 
 
 #use_virtualenv('r-reticulate')
-use_python('/usr/local/opt/python@3.10/bin/python3')
+#use_python('/usr/local/opt/python@3.10/bin/python3')
+use_python('/usr/local/bin/python3')
 
 ```
 
