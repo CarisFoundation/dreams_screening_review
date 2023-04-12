@@ -18,7 +18,7 @@ eligible_or_not =  sdata
 eligible = sdata[
     (_.total >= 14)&
     (_.age_range!="not_valid_age")&
-    (_.age_range!="25_29")
+    (_.age_range!="25-29")
 ]
 
 
@@ -27,7 +27,7 @@ to_be_served = sdata[
     (_.code =="---")&
     (_.total>=14)&
     (_.age_range!="not_valid_age")&
-    (_.age_range!="25_29")
+    (_.age_range!="25-29")
 ]
 
 # already served
@@ -35,5 +35,5 @@ served = sdata[
     (_.code!="---")&
     (_.total>=14)&
     (_.age_range!="not_valid_age")&
-    (_.age_range!="25_29")
+    (_.age_range!="25-29")
 ]
