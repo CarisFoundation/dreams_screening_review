@@ -48,7 +48,9 @@ use_python('/usr/local/bin/python3')
 ```{python}
 #| label: Data
 #| output: false
-
+import openpyxl
+from pandas import ExcelWriter, to_datetime
+from datetime import datetime
 from screening import (
     SCREENED,
     ELIGIBLE,
@@ -67,6 +69,21 @@ from screening import (
 #unserved_Q2FY22.to_excel("./unserved_Q2FY22.xlsx",index=False)
 #unserved_Q3FY22.to_excel("./unserved_Q3FY22.xlsx",index=False)
 #unserved_Q4FY22.to_excel("./unserved_Q4FY22.xlsx",index=False)
+
+df = TOBESERVEDFY23
+
+column_name = 'commune'
+unique_values = df[column_name].unique()
+#df['interview_date'] = to_datetime(df['interview_date'],errors='coerce',utc=True)
+df['interview_date'] = df['interview_date'].astype(str)
+#df['dob'] = to_datetime(df['dob'],errors='coerce',utc=True)
+df['dob'] = df['dob'].astype(str)
+
+with ExcelWriter(f"./tobeservedfy23_by_communes.xlsx", engine = 'openpyxl') as writer:
+    for unique_value in unique_values:
+        df_output = df[df[column_name].str.contains(unique_value)]
+        df_output.to_excel(writer, sheet_name = unique_value, index = False)
+
 ```
 
 
