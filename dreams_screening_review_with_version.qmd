@@ -1,0 +1,368 @@
+---
+title: "Dreams Screening Review"
+subtitle: "| Caris Foundation International | Impact Youth Project"
+author: "Alexandro Disla | M&E Officer"
+output-file: "dreams_screening_review_11092023.html"
+---
+
+<style>
+body{
+  text-align: justify
+}
+</style>
+
+```{r}
+#| label: setup
+rm(list=ls())
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(RMySQL))
+suppressPackageStartupMessages(library(odbc))
+suppressPackageStartupMessages(library(DBI))
+suppressPackageStartupMessages(library(viridis)) 
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(ggrepel))
+suppressPackageStartupMessages(library(ggiraphExtra))
+suppressPackageStartupMessages(library(hrbrthemes))
+suppressPackageStartupMessages(library(plotly))
+suppressPackageStartupMessages(library(stringr))
+suppressPackageStartupMessages(library(RColorBrewer))
+suppressPackageStartupMessages(library(tidytext))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(purrr))
+suppressPackageStartupMessages(library(lubridate))
+suppressPackageStartupMessages(library(scales))
+suppressPackageStartupMessages(library(extrafont))
+suppressPackageStartupMessages(library(forcats))
+suppressPackageStartupMessages(library(DT))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(readxl))
+suppressPackageStartupMessages(library(reticulate))
+suppressPackageStartupMessages(library(kableExtra))
+suppressPackageStartupMessages(library(gt))
+
+#use_virtualenv('r-reticulate')
+#use_python('/usr/local/opt/python@3.10/bin/python3')
+use_python('/usr/local/bin/python3')
+
+```
+
+```{python}
+#| label: Data
+#| output: false
+import openpyxl
+from pandas import ExcelWriter, to_datetime
+from datetime import datetime
+from screening import (
+    SCREENED,
+    ELIGIBLE,
+    TOBESERVED,
+    SERVED,
+    TOBESERVEDFY23,
+    TOBESERVEDPERQUARTER,
+   served_FY23,
+   unserved_Q1FY22,
+   unserved_Q2FY22,
+   unserved_Q3FY22,
+   unserved_Q4FY22
+)
+#served_FY23.to_excel("./served_fy23.xlsx",index=False)
+#unserved_Q1FY22.to_excel("./unserved_Q1FY22.xlsx",index=False)
+#unserved_Q2FY22.to_excel("./unserved_Q2FY22.xlsx",index=False)
+#unserved_Q3FY22.to_excel("./unserved_Q3FY22.xlsx",index=False)
+#unserved_Q4FY22.to_excel("./unserved_Q4FY22.xlsx",index=False)
+
+df = TOBESERVEDFY23
+
+column_name = 'commune'
+unique_values = df[column_name].unique()
+#df['interview_date'] = to_datetime(df['interview_date'],errors='coerce',utc=True)
+df['interview_date'] = df['interview_date'].astype(str)
+#df['dob'] = to_datetime(df['dob'],errors='coerce',utc=True)
+df['dob'] = df['dob'].astype(str)
+
+with ExcelWriter(f"./tobeservedfy23_by_communes.xlsx", engine = 'openpyxl') as writer:
+    for unique_value in unique_values:
+        df_output = df[df[column_name].str.contains(unique_value)]
+        df_output.to_excel(writer, sheet_name = unique_value, index = False)
+
+```
+
+
+## Overview
+
+Notre objectif, ici, est d'avoir une idée globale pour le processus d'enrôlement et l'éligibilité des AGYW.
+
+Dans cette optique, on va établir les éléments suivants:
+
+- **screened**: Nombre de bénéficaires qui ont répondu les questionnaires.
+
+- **eligible**: Nombre de béneficiares qui ont répondu aux questionnaires et ont un score supérieur à 14.
+
+- **served**: Nombre de bénéficiaires qui ont un code dreams indiquant que les data clercs ont au moins effectués une saisie sur HIVHAITI.
+
+- **to_be_served**: Nombre de bénéficiaires qui n'ont pas de code dreams indiquant qu'ils n'ont pas été saisies.^[
+  Deux possibilités, Elles n'ont pas encore été appelées dans les hubs ou bien les fiches de terrain contenant leur informations n'ont pas encore saisies sur HIVHAITI.
+]
+
+## Screened VS Eligible
+
+```{r}
+#| label: screened vs eligible
+screened_eligible<-data.frame(
+  FY18 =c(
+    py$SCREENED$FY18,
+    py$ELIGIBLE$FY18,
+    (py$ELIGIBLE$FY18/py$SCREENED$FY18)*100
+  ),
+  FY19 =c(
+    py$SCREENED$FY19,
+    py$ELIGIBLE$FY19,
+    (py$ELIGIBLE$FY19/py$SCREENED$FY19)*100
+  ),
+  FY20 =c(
+    py$SCREENED$FY20,
+    py$ELIGIBLE$FY20,
+    (py$ELIGIBLE$FY20/py$SCREENED$FY20)*100
+  ),
+  FY21 =c(
+    py$SCREENED$FY21,
+    py$ELIGIBLE$FY21,
+    (py$ELIGIBLE$FY21/py$SCREENED$FY21)*100
+  ),
+  FY22 =c(
+    py$SCREENED$FY22,
+    py$ELIGIBLE$FY22,
+    (py$ELIGIBLE$FY22/py$SCREENED$FY22)*100
+  ),
+  FY23 =c(
+    py$SCREENED$FY23,
+    py$ELIGIBLE$FY23,
+    (py$ELIGIBLE$FY23/py$SCREENED$FY23)*100
+  )
+)
+row.names(screened_eligible) <- c("screened", "eligible","% of Agyw enrolled")
+
+screened_eligible%>%
+  gt(
+    rowname_col = c("screened", "eligible","% of Agyw enrolled"),
+    rownames_to_stub=TRUE
+  )%>%
+  tab_header(
+    title = md("**Table 1: Présentation du nombre de bénéficiares screenées et enrôlées**")
+  )%>%tab_stubhead(
+    label = md("**mod/year**")
+  ) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "lightgreen"),
+      cell_text(color = "white")
+      ),
+    locations = cells_body(rows = 3)
+  ) %>%
+  fmt_number(
+   columns=2:7,
+   rows=1:3,
+   decimals = 0
+  ) %>%
+  tab_source_note(
+    source_note = md("**Source: HIVHAITI**")
+  )
+
+```
+
+## Eligible VS Served
+
+```{r}
+#| label: served vs eligible
+eligible_served<-data.frame(
+  FY18 =c(
+    py$SERVED$FY18,
+    py$ELIGIBLE$FY18,
+    (py$SERVED$FY18/py$ELIGIBLE$FY18)*100
+  ),
+  FY19 =c(
+    py$SERVED$FY19,
+    py$ELIGIBLE$FY19,
+    (py$SERVED$FY19/py$ELIGIBLE$FY19)*100
+  ),
+  FY20 =c(
+    py$SERVED$FY20,
+    py$ELIGIBLE$FY20,
+    (py$SERVED$FY20/py$ELIGIBLE$FY20)*100
+  ),
+  FY21 =c(
+    py$SERVED$FY21,
+    py$ELIGIBLE$FY21,
+    (py$SERVED$FY21/py$ELIGIBLE$FY21)*100
+  ),
+  FY22 =c(
+    py$SERVED$FY22,
+    py$ELIGIBLE$FY22,
+    (py$SERVED$FY22/py$ELIGIBLE$FY22)*100
+  ),
+  FY23 =c(
+    py$SERVED$FY23,
+    py$ELIGIBLE$FY23,
+    (py$SERVED$FY23/py$ELIGIBLE$FY23)*100
+  )
+)
+row.names(eligible_served) <- c("served", "eligible","% of Agyw served")
+
+eligible_served%>%
+  gt(
+    rowname_col = c("served", "eligible","% of Agyw served"),
+    rownames_to_stub=TRUE
+  )%>%
+  tab_header(
+    title = md("**Table 2: Présentation du nombre de bénéficiares éligibles et servies**")
+  )%>%tab_stubhead(
+    label = md("**mod/year**")
+  ) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "lightgreen"),
+      cell_text(color = "white")
+      ),
+    locations = cells_body(rows = 3)
+  ) %>%
+  fmt_number(
+   columns=2:7,
+   rows=1:3,
+   decimals = 0
+  ) %>%
+  tab_source_note(
+    source_note = md("**Source: HIVHAITI**")
+  )
+
+```
+
+## Eligible VS To Be Served
+
+```{r}
+#| label: tobeserved vs eligible
+eligible_tobeserved<-data.frame(
+  FY18 =c(
+    py$TOBESERVED$FY18,
+    py$ELIGIBLE$FY18,
+    (py$TOBESERVED$FY18/py$ELIGIBLE$FY18)*100
+  ),
+  FY19 =c(
+    py$TOBESERVED$FY19,
+    py$ELIGIBLE$FY19,
+    (py$TOBESERVED$FY19/py$ELIGIBLE$FY19)*100
+  ),
+  FY20 =c(
+    py$TOBESERVED$FY20,
+    py$ELIGIBLE$FY20,
+    (py$TOBESERVED$FY20/py$ELIGIBLE$FY20)*100
+  ),
+  FY21 =c(
+    py$TOBESERVED$FY21,
+    py$ELIGIBLE$FY21,
+    (py$TOBESERVED$FY21/py$ELIGIBLE$FY21)*100
+  ),
+  FY22 =c(
+    py$TOBESERVED$FY22,
+    py$ELIGIBLE$FY22,
+    (py$TOBESERVED$FY22/py$ELIGIBLE$FY22)*100
+  ),
+  FY23 =c(
+    py$TOBESERVED$FY23,
+    py$ELIGIBLE$FY23,
+    (py$TOBESERVED$FY23/py$ELIGIBLE$FY23)*100
+  )
+)
+row.names(eligible_tobeserved) <- c("to be served", "eligible","% of Agyw to be served")
+
+eligible_tobeserved%>%
+  gt(
+    rowname_col = c("to be served", "eligible","% of Agyw to be served"),
+    rownames_to_stub=TRUE
+  )%>%
+  tab_header(
+    title = md("**Table 3: Présentation du nombre de bénéficiares éligibles et à servir**")
+  )%>%tab_stubhead(
+    label = md("**mod/year**")
+  ) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "lightgreen"),
+      cell_text(color = "white")
+      ),
+    locations = cells_body(rows = 3)
+  ) %>%
+  fmt_number(
+   columns=2:7,
+   rows=1:3,
+   decimals = 0
+  ) %>%
+  tab_source_note(
+    source_note = md("**Source: HIVHAITI**")
+  )
+```
+
+## TO Be Served Per Quarter
+
+```{r}
+#| label: served per quarter
+py$TOBESERVEDPERQUARTER%>%
+  gt(
+    rowname_col = c(
+      "unserved_FY23",
+      #"unserved_FY22",
+      #"unserved_FY21",
+      "unserved_Q1FY22",
+      "unserved_Q2FY22",
+      "unserved_Q3FY22",
+      "unserved_Q4FY22",
+      #"unserved_FY20",
+      #"unserved_Before_FY20",
+    ),
+    rownames_to_stub=TRUE
+  )%>%
+  tab_header(
+    title = md("**Table 4: Présentation du nombre de bénéficiares à servir par trimestre**")
+  )%>%tab_stubhead(
+    label = md("**trim/donnee**")
+  ) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "lightgreen"),
+      cell_text(color = "white")
+      ),
+    locations = cells_body(rows = 1)
+  ) %>%
+  fmt_number(
+   columns=2,
+   decimals = 0
+  ) %>%
+  tab_source_note(
+    source_note = md("**Source: HIVHAITI**")
+  )
+```
+
+
+
+## Liste des agyw à servir pour FY23
+
+```{r}
+#| label: FY23 table
+#| warning: false
+datatable(py$TOBESERVEDFY23, extensions = 'Buttons',
+  options = list(dom = 'Bfrtip',
+  columnDefs = list(list(className = 'dt-center', targets = "_all")),
+  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#800000', 'color': '#fff'});",
+    "}"),
+  buttons = list(
+    list(extend='copy',title="TO_BE_SERVED_FY23"), 
+    list(extend='csv',title="TO_BE_SERVED_FY23"), 
+    list(extend='excel',title="TO_BE_SERVED_FY23"), 
+    list(extend='pdf',title="TO_BE_SERVED_FY23"), 
+    list(extend='print',title="TO_BE_SERVED_FY23")
+  ),
+  pageLength = 10))                         
+```   
+
+
