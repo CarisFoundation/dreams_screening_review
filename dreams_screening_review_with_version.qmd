@@ -2,7 +2,7 @@
 title: "Dreams Screening Review"
 subtitle: "| Caris Foundation International | Impact Youth Project"
 author: "Alexandro Disla | M&E Officer"
-output-file: "dreams_screening_review_16102023.html"
+output-file: "dreams_screening_review_06112023.html"
 ---
 
 <style>
@@ -53,23 +53,14 @@ import openpyxl
 from pandas import ExcelWriter, to_datetime
 from datetime import datetime
 from screening import (
-    SCREENED,
-    ELIGIBLE,
-    TOBESERVED,
-    SERVED,
-    TOBESERVEDFY23,
-    TOBESERVEDPERQUARTER,
-   served_FY23,
-   unserved_Q1FY22,
-   unserved_Q2FY22,
-   unserved_Q3FY22,
-   unserved_Q4FY22
+  SCREENED,
+  ELIGIBLE,
+  TOBESERVED,
+  SERVED,
+  TOBESERVEDFY23,
+  TOBESERVEDFY24,
+  TOBESERVEDPERQUARTER
 )
-#served_FY23.to_excel("./served_fy23.xlsx",index=False)
-#unserved_Q1FY22.to_excel("./unserved_Q1FY22.xlsx",index=False)
-#unserved_Q2FY22.to_excel("./unserved_Q2FY22.xlsx",index=False)
-#unserved_Q3FY22.to_excel("./unserved_Q3FY22.xlsx",index=False)
-#unserved_Q4FY22.to_excel("./unserved_Q4FY22.xlsx",index=False)
 
 df = TOBESERVEDFY23
 
@@ -84,6 +75,20 @@ with ExcelWriter(f"./tobeservedfy23_by_communes.xlsx", engine = 'openpyxl') as w
     for unique_value in unique_values:
         df_output = df[df[column_name].str.contains(unique_value)]
         df_output.to_excel(writer, sheet_name = unique_value, index = False)
+
+df24 = TOBESERVEDFY24
+
+column_name = 'commune'
+unique_values = df24[column_name].unique()
+#df24['interview_date'] = to_datetime(df24['interview_date'],errors='coerce',utc=True)
+df24['interview_date'] = df24['interview_date'].astype(str)
+#df24['dob'] = to_datetime(df24['dob'],errors='coerce',utc=True)
+df24['dob'] = df24['dob'].astype(str)
+
+with ExcelWriter(f"./tobeservedfy24_by_communes.xlsx", engine = 'openpyxl') as writer:
+    for unique_value in unique_values:
+        df24_output = df24[df24[column_name].str.contains(unique_value)]
+        df24_output.to_excel(writer, sheet_name = unique_value, index = False)
 
 ```
 
@@ -109,11 +114,6 @@ Dans cette optique, on va établir les éléments suivants:
 ```{r}
 #| label: screened vs eligible
 screened_eligible<-data.frame(
-  FY18 =c(
-    py$SCREENED$FY18,
-    py$ELIGIBLE$FY18,
-    (py$ELIGIBLE$FY18/py$SCREENED$FY18)*100
-  ),
   FY19 =c(
     py$SCREENED$FY19,
     py$ELIGIBLE$FY19,
@@ -138,6 +138,11 @@ screened_eligible<-data.frame(
     py$SCREENED$FY23,
     py$ELIGIBLE$FY23,
     (py$ELIGIBLE$FY23/py$SCREENED$FY23)*100
+  ),
+  FY24 =c(
+    py$SCREENED$FY24,
+    py$ELIGIBLE$FY24,
+    (py$ELIGIBLE$FY24/py$SCREENED$FY24)*100
   )
 )
 row.names(screened_eligible) <- c("screened", "eligible","% of Agyw enrolled")
@@ -175,11 +180,6 @@ screened_eligible%>%
 ```{r}
 #| label: served vs eligible
 eligible_served<-data.frame(
-  FY18 =c(
-    py$SERVED$FY18,
-    py$ELIGIBLE$FY18,
-    (py$SERVED$FY18/py$ELIGIBLE$FY18)*100
-  ),
   FY19 =c(
     py$SERVED$FY19,
     py$ELIGIBLE$FY19,
@@ -204,6 +204,11 @@ eligible_served<-data.frame(
     py$SERVED$FY23,
     py$ELIGIBLE$FY23,
     (py$SERVED$FY23/py$ELIGIBLE$FY23)*100
+  ),
+  FY24 =c(
+    py$SERVED$FY24,
+    py$ELIGIBLE$FY24,
+    (py$SERVED$FY24/py$ELIGIBLE$FY24)*100
   )
 )
 row.names(eligible_served) <- c("served", "eligible","% of Agyw served")
@@ -241,11 +246,6 @@ eligible_served%>%
 ```{r}
 #| label: tobeserved vs eligible
 eligible_tobeserved<-data.frame(
-  FY18 =c(
-    py$TOBESERVED$FY18,
-    py$ELIGIBLE$FY18,
-    (py$TOBESERVED$FY18/py$ELIGIBLE$FY18)*100
-  ),
   FY19 =c(
     py$TOBESERVED$FY19,
     py$ELIGIBLE$FY19,
@@ -270,6 +270,11 @@ eligible_tobeserved<-data.frame(
     py$TOBESERVED$FY23,
     py$ELIGIBLE$FY23,
     (py$TOBESERVED$FY23/py$ELIGIBLE$FY23)*100
+  ),
+  FY24 =c(
+    py$TOBESERVED$FY24,
+    py$ELIGIBLE$FY24,
+    (py$TOBESERVED$FY24/py$ELIGIBLE$FY24)*100
   )
 )
 row.names(eligible_tobeserved) <- c("to be served", "eligible","% of Agyw to be served")
@@ -308,15 +313,11 @@ eligible_tobeserved%>%
 py$TOBESERVEDPERQUARTER%>%
   gt(
     rowname_col = c(
-      "unserved_FY23",
-      #"unserved_FY22",
-      #"unserved_FY21",
-      "unserved_Q1FY22",
-      "unserved_Q2FY22",
-      "unserved_Q3FY22",
-      "unserved_Q4FY22",
-      #"unserved_FY20",
-      #"unserved_Before_FY20",
+      "unserved_FY24",
+      "unserved_Q1FY23",
+      "unserved_Q2FY23",
+      "unserved_Q3FY23",
+      "unserved_Q4FY23"
     ),
     rownames_to_stub=TRUE
   )%>%
@@ -341,6 +342,29 @@ py$TOBESERVEDPERQUARTER%>%
   )
 ```
 
+
+
+## Liste des agyw à servir pour FY24
+
+```{r}
+#| label: FY24 table
+#| warning: false
+datatable(py$TOBESERVEDFY24, extensions = 'Buttons',
+  options = list(dom = 'Bfrtip',
+  columnDefs = list(list(className = 'dt-center', targets = "_all")),
+  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#800000', 'color': '#fff'});",
+    "}"),
+  buttons = list(
+    list(extend='copy',title="TO_BE_SERVED_FY24"), 
+    list(extend='csv',title="TO_BE_SERVED_FY24"), 
+    list(extend='excel',title="TO_BE_SERVED_FY24"), 
+    list(extend='pdf',title="TO_BE_SERVED_FY24"), 
+    list(extend='print',title="TO_BE_SERVED_FY24")
+  ),
+  pageLength = 10))                         
+```   
 
 
 ## Liste des agyw à servir pour FY23
