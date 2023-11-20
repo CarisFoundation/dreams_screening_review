@@ -1,7 +1,8 @@
 project:
   output-dir: _output
   render:
-    - "dreams_*.qmd"
+    - "dreams_screening_review.qmd"
+    - "!dreams_screening_review_with_version.qmd"
     - "!Readme.md"
 toc: true
 toc-depth: 4
