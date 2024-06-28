@@ -13,6 +13,8 @@ body{
 
 ```{r}
 #| label: setup
+#| output: false
+#| warning: false
 rm(list=ls())
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(RMySQL))
@@ -42,7 +44,7 @@ suppressPackageStartupMessages(library(gt))
 
 #use_virtualenv('r-reticulate')
 #use_python('/usr/local/opt/python@3.10/bin/python3')
-use_python('/usr/local/bin/python3.11')
+use_python('/usr/local/bin/python3.12')
 
 ```
 
@@ -175,10 +177,12 @@ screened_eligible%>%
 
 ```
 
-## Eligible VS Served
+
 
 ```{r}
 #| label: served vs eligible
+#| echo: false
+#| output: false
 eligible_served<-data.frame(
   FY19 =c(
     py$SERVED$FY19,
@@ -241,7 +245,7 @@ eligible_served%>%
 
 ```
 
-## Eligible VS To Be Served
+## Eligible VS To Be Served (Inactives a appeles dans les salles)
 
 ```{r}
 #| label: tobeserved vs eligible
