@@ -37,3 +37,41 @@ served = sdata[
     (_.age_range!="not_valid_age")&
     (_.age_range!="25-29")
 ]
+
+ecommune = [
+    'kenscoff',
+     'petion_ville',
+     'port-au-prince',
+     'tabarre',
+     'cit_soleil',
+     'carrefour',
+     'croix-des-bouquets',
+     'ption-ville',
+     'pointe--raquette',
+    'les_anglais',
+    'jrmie',
+    'chantal',
+    'logne',
+    'cabaret',
+    'grand-gove',
+    'petit-gove',
+    'chambellan',
+    'cayes-jacmel', 
+    'cavaillon',
+    'fonds-verrettes',
+    'petite-rivire-de-nippes',
+    'bainet',
+    'torbeck',
+    'vallires',
+    'anse--galets',
+    'tiburon',
+    'copy-1-of-ganthier',
+    'les_cayes',
+    'port--piment',
+    'port-salut',
+
+]
+eligible = eligible[~eligible.commune.isin(ecommune)]
+eligible_or_not=eligible_or_not[~eligible_or_not.commune.isin(ecommune)]
+served=served[~served.commune.isin(ecommune)]
+to_be_served=to_be_served[~to_be_served.commune.isin(ecommune)]

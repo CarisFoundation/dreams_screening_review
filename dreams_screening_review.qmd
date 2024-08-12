@@ -41,6 +41,7 @@ suppressPackageStartupMessages(library(readxl))
 suppressPackageStartupMessages(library(reticulate))
 suppressPackageStartupMessages(library(kableExtra))
 suppressPackageStartupMessages(library(gt))
+suppressPackageStartupMessages(library(reticulate))
 
 #use_virtualenv('r-reticulate')
 #use_python('/usr/local/opt/python@3.10/bin/python3')
