@@ -1,6 +1,6 @@
 ---
 title: "Dreams Screening Review"
-subtitle: "| Caris Foundation International | Impact Youth Project"
+subtitle: "| Caris Foundation International | S.I.Y Project"
 author: "Alexandro Disla | M&E Officer"
 output-file: "dreams_screening_review.html"
 ---
@@ -45,7 +45,7 @@ suppressPackageStartupMessages(library(reticulate))
 
 #use_virtualenv('r-reticulate')
 #use_python('/usr/local/opt/python@3.10/bin/python3')
-use_python('/usr/local/bin/python3.12')
+use_python('/usr/local/bin/python3')
 
 ```
 
@@ -111,6 +111,8 @@ Dans cette optique, on va établir les éléments suivants:
 - **to_be_served**: Nombre de bénéficiaires qui n'ont pas de code dreams indiquant qu'ils n'ont pas été saisies.^[
   Deux possibilités, Elles n'ont pas encore été appelées dans les hubs ou bien les fiches de terrain contenant leur informations n'ont pas encore saisies sur HIVHAITI.
 ]
+
+> S'il vous plait, je vous prie de filtrer les communes d'interets pour cette iteration du programe DREAMS
 
 ## Screened VS Eligible
 
