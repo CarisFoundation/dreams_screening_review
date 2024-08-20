@@ -38,7 +38,7 @@ served = sdata[
     (_.age_range!="25-29")
 ]
 
-ecommune = [
+""" ecommune = [
     'kenscoff',
      'petion_ville',
      'port-au-prince',
@@ -74,4 +74,4 @@ ecommune = [
 eligible = eligible[~eligible.commune.isin(ecommune)]
 eligible_or_not=eligible_or_not[~eligible_or_not.commune.isin(ecommune)]
 served=served[~served.commune.isin(ecommune)]
-to_be_served=to_be_served[~to_be_served.commune.isin(ecommune)]
+to_be_served=to_be_served[~to_be_served.commune.isin(ecommune)] """
