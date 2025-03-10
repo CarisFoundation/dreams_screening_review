@@ -1,6 +1,6 @@
 from pandas import read_sql_query, to_datetime
 from numpy import nan
-from siuba import _
+# Removed: from siuba import _
 from ..db import SDATA, engine
 
 from sqlalchemy import text
@@ -12,30 +12,29 @@ sdata.replace(r'^\s*$', nan, regex=True, inplace=True)
 sdata.code = sdata.code.fillna('---')
 sdata.interview_date = sdata.loc[:, 'interview_date'].apply(to_datetime)
 # screened
-eligible_or_not =  sdata
+eligible_or_not = sdata
 
 # eligible
 eligible = sdata[
-    (_.total >= 14)&
-    (_.age_range!="not_valid_age")&
-    (_.age_range!="25-29")
+    (sdata['total'] >= 14) &
+    (sdata['age_range'] != "not_valid_age") &
+    (sdata['age_range'] != "25-29")
 ]
-
 
 # to be served
 to_be_served = sdata[
-    (_.code =="---")&
-    (_.total>=14)&
-    (_.age_range!="not_valid_age")&
-    (_.age_range!="25-29")
+    (sdata['code'] == "---") &
+    (sdata['total'] >= 14) &
+    (sdata['age_range'] != "not_valid_age") &
+    (sdata['age_range'] != "25-29")
 ]
 
 # already served
 served = sdata[
-    (_.code!="---")&
-    (_.total>=14)&
-    (_.age_range!="not_valid_age")&
-    (_.age_range!="25-29")
+    (sdata['code'] != "---") &
+    (sdata['total'] >= 14) &
+    (sdata['age_range'] != "not_valid_age") &
+    (sdata['age_range'] != "25-29")
 ]
 
 """ ecommune = [
@@ -72,6 +71,6 @@ served = sdata[
 
 ]
 eligible = eligible[~eligible.commune.isin(ecommune)]
-eligible_or_not=eligible_or_not[~eligible_or_not.commune.isin(ecommune)]
-served=served[~served.commune.isin(ecommune)]
-to_be_served=to_be_served[~to_be_served.commune.isin(ecommune)] """
+eligible_or_not = eligible_or_not[~eligible_or_not.commune.isin(ecommune)]
+served = served[~served.commune.isin(ecommune)]
+to_be_served = to_be_served[~to_be_served.commune.isin(ecommune)] """

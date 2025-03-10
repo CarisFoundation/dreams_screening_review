@@ -45,7 +45,8 @@ suppressPackageStartupMessages(library(reticulate))
 
 #use_virtualenv('r-reticulate')
 #use_python('/usr/local/opt/python@3.10/bin/python3')
-use_python('/usr/local/bin/python3')
+#use_python('/usr/local/bin/python3')
+use_virtualenv('./.venv', required = TRUE)
 
 ```
 
@@ -62,10 +63,11 @@ from screening import (
   SERVED,
   TOBESERVEDFY23,
   TOBESERVEDFY24,
+  TOBESERVEDFY25,
   TOBESERVEDPERQUARTER
 )
 
-df = TOBESERVEDFY23
+df = TOBESERVEDFY24
 
 column_name = 'commune'
 unique_values = df[column_name].unique()
@@ -79,19 +81,19 @@ with ExcelWriter(f"./tobeservedfy23_by_communes.xlsx", engine = 'openpyxl') as w
         df_output = df[df[column_name].str.contains(unique_value)]
         df_output.to_excel(writer, sheet_name = unique_value, index = False)
 
-df24 = TOBESERVEDFY24
+df25 = TOBESERVEDFY25
 
 column_name = 'commune'
-unique_values = df24[column_name].unique()
+unique_values = df25[column_name].unique()
 #df24['interview_date'] = to_datetime(df24['interview_date'],errors='coerce',utc=True)
-df24['interview_date'] = df24['interview_date'].astype(str)
+df25['interview_date'] = df25['interview_date'].astype(str)
 #df24['dob'] = to_datetime(df24['dob'],errors='coerce',utc=True)
-df24['dob'] = df24['dob'].astype(str)
+df25['dob'] = df25['dob'].astype(str)
 
-with ExcelWriter(f"./tobeservedfy24_by_communes.xlsx", engine = 'openpyxl') as writer:
+with ExcelWriter(f"./tobeservedfy25_by_communes.xlsx", engine = 'openpyxl') as writer:
     for unique_value in unique_values:
-        df24_output = df24[df24[column_name].str.contains(unique_value)]
-        df24_output.to_excel(writer, sheet_name = unique_value, index = False)
+        df25_output = df25[df25[column_name].str.contains(unique_value)]
+        df25_output.to_excel(writer, sheet_name = unique_value, index = False)
 
 ```
 
@@ -148,6 +150,11 @@ screened_eligible<-data.frame(
     py$SCREENED$FY24,
     py$ELIGIBLE$FY24,
     (py$ELIGIBLE$FY24/py$SCREENED$FY24)*100
+  ),
+  FY25 =c(
+    py$SCREENED$FY25,
+    py$ELIGIBLE$FY25,
+    (py$ELIGIBLE$FY25/py$SCREENED$FY25)*100
   )
 )
 row.names(screened_eligible) <- c("screened", "eligible","% of Agyw enrolled")
@@ -216,6 +223,11 @@ eligible_served<-data.frame(
     py$SERVED$FY24,
     py$ELIGIBLE$FY24,
     (py$SERVED$FY24/py$ELIGIBLE$FY24)*100
+  ),
+  FY25 =c(
+    py$SERVED$FY25,
+    py$ELIGIBLE$FY25,
+    (py$SERVED$FY25/py$ELIGIBLE$FY25)*100
   )
 )
 row.names(eligible_served) <- c("served", "eligible","% of Agyw served")
@@ -282,6 +294,11 @@ eligible_tobeserved<-data.frame(
     py$TOBESERVED$FY24,
     py$ELIGIBLE$FY24,
     (py$TOBESERVED$FY24/py$ELIGIBLE$FY24)*100
+  ),
+  FY25 =c(
+    py$TOBESERVED$FY25,
+    py$ELIGIBLE$FY25,
+    (py$TOBESERVED$FY25/py$ELIGIBLE$FY25)*100
   )
 )
 row.names(eligible_tobeserved) <- c("to be served", "eligible","% of Agyw to be served")
@@ -349,7 +366,26 @@ py$TOBESERVEDPERQUARTER%>%
   )
 ```
 
-
+## Liste des agyw à servir pour FY25
+```{r}
+#| label: FY25 table
+#| warning: false
+datatable(py$TOBESERVEDFY25, extensions = 'Buttons',
+  options = list(dom = 'Bfrtip',
+  columnDefs = list(list(className = 'dt-center', targets = "_all")),
+  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#800000', 'color': '#fff'});",
+    "}"),
+  buttons = list(
+    list(extend='copy',title="TO_BE_SERVED_FY25"), 
+    list(extend='csv',title="TO_BE_SERVED_FY25"), 
+    list(extend='excel',title="TO_BE_SERVED_FY25"), 
+    list(extend='pdf',title="TO_BE_SERVED_FY25"), 
+    list(extend='print',title="TO_BE_SERVED_FY25")
+  ),
+  pageLength = 10))
+```                       
 
 ## Liste des agyw à servir pour FY24
 

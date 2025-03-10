@@ -1,0 +1,6 @@
+pandas
+openpyxl
+sqlalchemy
+python-dotenv
+python-decouple
+pymysql
